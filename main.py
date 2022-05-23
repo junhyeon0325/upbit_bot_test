@@ -18,6 +18,7 @@ def cal_target(ticker):
     yesterday_range = yesterday['high'] - yesterday['low']
     target = today['open'] + yesterday_range * 0.5
     return target
+
 def sell(ticker):
     # time.sleep(0.1)
     balance = upbit.get_balance(ticker)
@@ -147,7 +148,7 @@ while True:
         if not time_save:
             if (now.hour-1)%3 == 0:
                 time_save = True
-        # 하루에 한번 작동하는 save
+        # 하루에 한번 작동하는 save / O
         if prev_day != now.day:
             prev_day = now.day
             save1 = True
@@ -155,14 +156,14 @@ while True:
             save3 = True
             msg = "save 변수가 True로 업데이트 됐습니다.\nsave1: " + str(save1) + " save2 -> " + str(save2) + " save3 -> " + str(save3)
             bot.sendMessage(mc,msg)
-        # 8시 50분에 코드가 실행 중인지 확인
+        # 8시 50분에 코드가 실행 중인지 확인 / O
         if now.hour == 8 and now.minute == 50 and save3:
             msg = "코드가 정상 실행 중입니다."
             bot.sendMessage(mc,msg)
             save3 = False
 
 
-        # 매도 시도
+        # 매도 시도 8시 59분 / O
         if now.hour == 8 and now.minute == 59 and save1:
             time.sleep(1)
             for i in range(n):
@@ -178,20 +179,20 @@ while True:
             # 매도가 다 되고 나서
             time.sleep(0.1)
             krw_balance = upbit.get_balance("KRW")
-            for i in range(n):
-                money_list[i] = int(krw_balance * percent_list[i])
-                df.loc[i, 'money_list'] = money_list[i]
-                df.to_csv('dataset.csv', index=None)
+            #for i in range(n):
+                #money_list[i] = int(krw_balance * percent_list[i])
+                #df.loc[i, 'money_list'] = money_list[i]
+                #df.to_csv('dataset.csv', index=None)
             msg = "----------매수할 돈 정보 갱신(money_list)----------\n"
             for i in range(n):
                 msg += coin_list[i] + " " + str(money_list[i])+"원"+"\n"
             print(msg)
             bot.sendMessage(mc,msg)
-            save_data(krw_balance)
+            #save_data(krw_balance)
             save1 = False
             now = datetime.now(timezone('Asia/Seoul'))
 
-        # 09:00:00 목표가 갱신
+        # 09:00:00 목표가 갱신 / O
         if now.hour == 9 and now.minute == 0 and now.second > 30 and save2:
             for i in range(n):
                 print(save2)
@@ -238,7 +239,7 @@ while True:
                 df.to_csv('dataset.csv', index=None)
                 print('----------매수 완료------------')
 
-        # 상태 출력
+        # 상태 출력 / O
         printall()
         if (now.hour % 3) == 0 and time_save:
             time_save = False
