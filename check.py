@@ -80,9 +80,7 @@ while True:
 
     # where the magic happens - main code
     for i in range(n):
-        
         if prices_now[i] >= prices_high_1[i]:
-            bot.sendMessage(chat_id=chat_id, text="check.py가 실행중입니다.1")
             msg = f'{coin_list[i]} {prices_prev[i]}원 -> {prices_now[i]}원 됨. \n1프로 올랐음 확인 바람\n'
             print(msg)
             #bot.sendMessage(mc,msg)
@@ -91,7 +89,6 @@ while True:
             prices_high_1[i] = prices_now[i] + prices_now[i] * 0.01
             prices_low_1[i] = prices_now[i] - prices_now[i] * 0.01
         if prices_now[i] <= prices_low_1[i]:
-            bot.sendMessage(chat_id=chat_id, text="check.py가 실행중입니다.2")
             msg = f'@@@{coin_list[i]}@@@ {prices_prev[i]}원 -> {prices_now[i]}원 됨. \n1프로 내려감 확인 바람\n'
             print(msg)
             #bot.sendMessage(mc,msg)
@@ -100,7 +97,6 @@ while True:
             prices_high_1[i] = prices_now[i] + prices_now[i] * 0.01
             prices_low_15[i] = prices_now[i] - prices_now[i] * 0.01
         if prices_now[i] >= prices_high_5[i]:
-            bot.sendMessage(chat_id=chat_id, text="check.py가 실행중입니다.3")
             msg = f'{coin_list[i]} {prices_prev[i]}원 -> {prices_now[i]}원 됨. \n5프로 올랐음 확인 바람\n'
             print(msg)
             #bot.sendMessage(mc,msg)
@@ -109,7 +105,6 @@ while True:
             prices_high_5[i] = prices_now[i] + prices_now[i] * 0.05
             prices_low_5[i] = prices_now[i] - prices_now[i] * 0.05
         if prices_now[i] <= prices_low_5[i]:
-            bot.sendMessage(chat_id=chat_id, text="check.py가 실행중입니다.4")
             msg = f'@@@{coin_list[i]}@@@ {prices_prev[i]}원 -> {prices_now[i]}원 됨. \n5프로 내려감 확인 바람\n'
             print(msg)
             #bot.sendMessage(mc,msg)
@@ -118,14 +113,12 @@ while True:
             prices_high_5[i] = prices_now[i] + prices_now[i] * 0.05
             prices_low_5[i] = prices_now[i] - prices_now[i] * 0.05
         if prices_now[i] >= prices_high_15[i] and save_high:
-            bot.sendMessage(chat_id=chat_id, text="check.py가 실행중입니다.5")
             save_high = False
             msg = f'!!!!!!!!!!{coin_list[i]} {prices_now[i]}원\n시가 대비 15프로나 올라갔음!!!!!!!!!!\n'
             print(msg)
             #bot.sendMessage(mc,msg)
             bot.sendMessage(chat_id=chat_id, text=msg)
         if prices_now[i] <= prices_low_15[i] and save_low:
-            bot.sendMessage(chat_id=chat_id, text="check.py가 실행중입니다.6")
             save_low = False
             msg = f'!!!!!!!!!!{coin_list[i]} {prices_now[i]}원\n시가 대비 15프로나 떨어졌음!!!!!!!!!!\n'
             print(msg)
