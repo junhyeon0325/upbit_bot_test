@@ -7,6 +7,9 @@ import telegram # pip install python-telegram-bot
 import json
 from dotenv import load_dotenv # pip install python-dotenv
 import os
+from telegram.ext import Updater
+from telegram.ext import CommandHandler
+import News
 
 
 def cal_target(ticker):
@@ -114,6 +117,21 @@ krw_balance = 0
 now = datetime.now(timezone('Asia/Seoul'))
 prev_day = now.day
 yesterday_ma15 = [0]*(n)
+
+#네이버 뉴스를 텔레그렘으로 불러오게 하는 소스코드
+updater = Updater(token='5366296136:AAF9B_3YXH5fAEAefJDnkAJUC08gGTY1mX8', use_context=True)
+dispatcher = updater.dispatcher
+def coin1(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="비트코인과 관련된 뉴스 기사들입니다.")
+    News.send_links()
+#step4.위에서 정의한 함수를 실행할 CommandHandler 정의
+start_handler = CommandHandler('bitcoin', coin1) #('명렁어',명령 함수)
+#step5.Dispatcher에 Handler를 추가
+dispatcher.add_handler(start_handler)
+#step6.Updater 실시간 입력 모니터링 시작(polling 개념)
+updater.start_polling()
+
+
 # 중간에 시작하더라도 아침 9시에 보유한 코인들을 팔 수 있게 만들었음
 # print("----------현재 보유중인 코인 개수----------")
 # for i in range(n):
