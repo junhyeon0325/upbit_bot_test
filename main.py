@@ -7,6 +7,10 @@ import telegram # pip install python-telegram-bot
 import json
 from dotenv import load_dotenv # pip install python-dotenv
 import os
+from telegram.ext import Updater
+from telegram.ext import CommandHandler
+import News
+import numpy as np
 
 
 def cal_target(ticker):
@@ -45,9 +49,9 @@ def printall():
 def save_data(krw_balance): # 만약 존버했을 경우와 비교를 하는 함수
     # 자신이 존버를 할 거라고 생각을 하고 해당 코인을 얼마나 가지고 있을 예정인지 변수 설정
     own_coin_list_04_08 = [
-        0, # BTC 만약 자신이 존버를 할 경우 가지고 있을 법한 비트코인 개수
-        0, # ETH
-        0 # DOGE
+        3, # BTC 만약 자신이 존버를 할 경우 가지고 있을 법한 비트코인 개수
+        2, # ETH
+        1 # DOGE
     ]
     df_saved_data = pd.read_csv('saved_data.csv')
     now_prices = [-1]*(n) 
@@ -74,11 +78,14 @@ def save_data(krw_balance): # 만약 존버했을 경우와 비교를 하는 함
         df2.to_csv('saved_data.csv', mode='a', header=False)
     print(msg)
     bot.sendMessage(mc,msg)
+
 def get_yesterday_ma15(ticker):
     df_get_yesterday_ma15 = pyupbit.get_ohlcv(ticker)
     close = df_get_yesterday_ma15['close']
     ma = close.rolling(window=5).mean()
     return ma[-2]
+
+
 
 # 객체 생성
 load_dotenv()
@@ -110,10 +117,24 @@ save1 = True
 save2 = True
 save3 = True
 time_save = True
-krw_balance = 0
+krw_balance = 10000000
 now = datetime.now(timezone('Asia/Seoul'))
 prev_day = now.day
 yesterday_ma15 = [0]*(n)
+
+#네이버 뉴스를 텔레그렘으로 불러오게 하는 소스코드
+updater = Updater(token='5366296136:AAF9B_3YXH5fAEAefJDnkAJUC08gGTY1mX8', use_context=True)
+dispatcher = updater.dispatcher
+def coin1(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="비트코인과 관련된 뉴스 기사들입니다.")
+    News.send_links()
+#step4.위에서 정의한 함수를 실행할 CommandHandler 정의
+start_handler = CommandHandler('bitcoin', coin1) #('명렁어',명령 함수)
+#step5.Dispatcher에 Handler를 추가
+dispatcher.add_handler(start_handler)
+#step6.Updater 실시간 입력 모니터링 시작(polling 개념)
+updater.start_polling()
+
 # 중간에 시작하더라도 아침 9시에 보유한 코인들을 팔 수 있게 만들었음
 # print("----------현재 보유중인 코인 개수----------")
 # for i in range(n):
@@ -141,6 +162,18 @@ for i in range(n):
         df.loc[i,'op_mode'] = False
         df.to_csv('dataset.csv', index=None)
 
+#백테스팅
+df = pyupbit.get_ohlcv("KRW-BTC", count=7)
+df['range'] = (df['high'] - df['low']) * 0.5
+df['target'] = df['open'] + df['range'].shift(1)
+df['ror'] = np.where(df['high'] > df['target'],
+                     df['close'] / df['target'],
+                     1)
+df['hpr'] = df['ror'].cumprod()
+df['dd'] = (df['hpr'].cummax() -df['hpr']) / df['hpr'].cummax() * 100
+print("mdd(%): ", df['dd'].max())
+print(df.tail())
+
 while True:
     try:
         # 지금 한국 시간
@@ -164,7 +197,7 @@ while True:
 
 
         # 매도 시도 8시 59분 / O
-        if now.hour == 8 and now.minute == 59 and save1:
+        if now.hour == 15 and now.minute == 29 and save1:
             time.sleep(1)
             for i in range(n):
                 if hold[i] and op_mode[i]:
@@ -178,17 +211,20 @@ while True:
 
             # 매도가 다 되고 나서
             time.sleep(0.1)
-            krw_balance = upbit.get_balance("KRW")
-            #for i in range(n):
-                #money_list[i] = int(krw_balance * percent_list[i])
-                #df.loc[i, 'money_list'] = money_list[i]
-                #df.to_csv('dataset.csv', index=None)
+            #krw_balance = upbit.get_balance("KRW")
+            print(krw_balance)
+            print(money_list)
+            print(percent_list)
+            for i in range(n):
+                money_list[i] = int(krw_balance * percent_list[i])
+                df.loc[i, 'money_list'] = money_list[i]
+                df.to_csv('dataset.csv', index=None)
             msg = "----------매수할 돈 정보 갱신(money_list)----------\n"
             for i in range(n):
                 msg += coin_list[i] + " " + str(money_list[i])+"원"+"\n"
             print(msg)
             bot.sendMessage(mc,msg)
-            #save_data(krw_balance)
+            save_data(krw_balance)
             save1 = False
             now = datetime.now(timezone('Asia/Seoul'))
 

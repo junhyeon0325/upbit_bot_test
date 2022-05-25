@@ -1,4 +1,4 @@
 coin,target,money_list,hold,op_mode,yesterday_ma15,open_price
-BTC,39565000.0,-1,False,True,38122200,0
-ETH,2674500.0,-1,False,True,2554400,0
-DOGE,113.5,-1,False,True,109,0
+BTC,39565000.0,500000,False,True,38122200,0
+ETH,2674500.0,500000,False,True,2554400,0
+DOGE,113.5,500000,False,True,109,0
