@@ -197,7 +197,7 @@ while True:
 
 
         # 매도 시도 8시 59분 / O
-        if now.hour == 15 and now.minute == 29 and save1:
+        if now.hour == 8 and now.minute == 59 and save1:
             time.sleep(1)
             for i in range(n):
                 if hold[i] and op_mode[i]:
