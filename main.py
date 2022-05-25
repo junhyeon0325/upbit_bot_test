@@ -48,9 +48,9 @@ def printall():
 def save_data(krw_balance): # 만약 존버했을 경우와 비교를 하는 함수
     # 자신이 존버를 할 거라고 생각을 하고 해당 코인을 얼마나 가지고 있을 예정인지 변수 설정
     own_coin_list_04_08 = [
-        0, # BTC 만약 자신이 존버를 할 경우 가지고 있을 법한 비트코인 개수
-        0, # ETH
-        0 # DOGE
+        3, # BTC 만약 자신이 존버를 할 경우 가지고 있을 법한 비트코인 개수
+        2, # ETH
+        1 # DOGE
     ]
     df_saved_data = pd.read_csv('saved_data.csv')
     now_prices = [-1]*(n) 
@@ -77,6 +77,7 @@ def save_data(krw_balance): # 만약 존버했을 경우와 비교를 하는 함
         df2.to_csv('saved_data.csv', mode='a', header=False)
     print(msg)
     bot.sendMessage(mc,msg)
+
 def get_yesterday_ma15(ticker):
     df_get_yesterday_ma15 = pyupbit.get_ohlcv(ticker)
     close = df_get_yesterday_ma15['close']
@@ -113,7 +114,7 @@ save1 = True
 save2 = True
 save3 = True
 time_save = True
-krw_balance = 0
+krw_balance = 10000000
 now = datetime.now(timezone('Asia/Seoul'))
 prev_day = now.day
 yesterday_ma15 = [0]*(n)
@@ -130,7 +131,6 @@ start_handler = CommandHandler('bitcoin', coin1) #('명렁어',명령 함수)
 dispatcher.add_handler(start_handler)
 #step6.Updater 실시간 입력 모니터링 시작(polling 개념)
 updater.start_polling()
-
 
 # 중간에 시작하더라도 아침 9시에 보유한 코인들을 팔 수 있게 만들었음
 # print("----------현재 보유중인 코인 개수----------")
@@ -182,7 +182,7 @@ while True:
 
 
         # 매도 시도 8시 59분 / O
-        if now.hour == 8 and now.minute == 59 and save1:
+        if now.hour == 15 and now.minute == 29 and save1:
             time.sleep(1)
             for i in range(n):
                 if hold[i] and op_mode[i]:
@@ -196,17 +196,20 @@ while True:
 
             # 매도가 다 되고 나서
             time.sleep(0.1)
-            krw_balance = upbit.get_balance("KRW")
-            #for i in range(n):
-                #money_list[i] = int(krw_balance * percent_list[i])
-                #df.loc[i, 'money_list'] = money_list[i]
-                #df.to_csv('dataset.csv', index=None)
+            #krw_balance = upbit.get_balance("KRW")
+            print(krw_balance)
+            print(money_list)
+            print(percent_list)
+            for i in range(n):
+                money_list[i] = int(krw_balance * percent_list[i])
+                df.loc[i, 'money_list'] = money_list[i]
+                df.to_csv('dataset.csv', index=None)
             msg = "----------매수할 돈 정보 갱신(money_list)----------\n"
             for i in range(n):
                 msg += coin_list[i] + " " + str(money_list[i])+"원"+"\n"
             print(msg)
             bot.sendMessage(mc,msg)
-            #save_data(krw_balance)
+            save_data(krw_balance)
             save1 = False
             now = datetime.now(timezone('Asia/Seoul'))
 
