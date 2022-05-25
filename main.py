@@ -10,6 +10,7 @@ import os
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 import News
+import numpy as np
 
 
 def cal_target(ticker):
@@ -83,6 +84,8 @@ def get_yesterday_ma15(ticker):
     close = df_get_yesterday_ma15['close']
     ma = close.rolling(window=5).mean()
     return ma[-2]
+
+
 
 # 객체 생성
 load_dotenv()
@@ -158,6 +161,18 @@ for i in range(n):
         op_mode[i] = False
         df.loc[i,'op_mode'] = False
         df.to_csv('dataset.csv', index=None)
+
+#백테스팅
+df = pyupbit.get_ohlcv("KRW-BTC", count=7)
+df['range'] = (df['high'] - df['low']) * 0.5
+df['target'] = df['open'] + df['range'].shift(1)
+df['ror'] = np.where(df['high'] > df['target'],
+                     df['close'] / df['target'],
+                     1)
+df['hpr'] = df['ror'].cumprod()
+df['dd'] = (df['hpr'].cummax() -df['hpr']) / df['hpr'].cummax() * 100
+print("mdd(%): ", df['dd'].max())
+print(df.tail())
 
 while True:
     try:
