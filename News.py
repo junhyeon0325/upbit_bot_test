@@ -8,10 +8,10 @@ import  time
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 
-bot_token  ='5366296136:AAF9B_3YXH5fAEAefJDnkAJUC08gGTY1mX8'
+bot_token  ='텔레그렘 봇 토큰을 입력하시오'
 bot = telegram.Bot(token = bot_token)
 query = '비트코인'
-chat_id  =  5342881340
+chat_id  =  텔레그렘 봇 chat_id를 입력하시오
 
 #step2.새로운 네이버 뉴스 기사 링크를 받아오는 함수
 def  get_new_links(old_links=[]):
