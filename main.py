@@ -89,12 +89,12 @@ def get_yesterday_ma15(ticker):
 
 # 객체 생성
 load_dotenv()
-access = "ZR6AUxRf0lZNWOLmoRWYdLcM3j9deQXvitsQLi7S"
-secret = "ndwaoM9yyiL7443kQwPxmMHr2UDuFc6aC27TzPfZ"
+access = "업비트 access키값을 입력해 주세요"
+secret = "업비트 secret키값을 입력해 주세요"
 upbit = pyupbit.Upbit(access, secret)
-token = "5366296136:AAF9B_3YXH5fAEAefJDnkAJUC08gGTY1mX8"
-chat_id = 5342881340
-mc = "5342881340"
+token = "텔레그렘 토큰을 입력해 주세요"
+chat_id = 텔레그렘 chat_id를 입력해 주세요
+mc = "텔레그렘 chat_id를 입력해 주세요"
 bot = telegram.Bot(token)
 df = pd.read_csv('dataset.csv')
 df2 = pd.DataFrame(columns=['date','jonbeo','auto_upbit','difference_jonbeo_autoupbit'])
