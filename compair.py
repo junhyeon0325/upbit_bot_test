@@ -12,8 +12,8 @@ from dotenv import load_dotenv # pip install python-dotenv
 import os
 
 load_dotenv()
-access = os.getenv('ZR6AUxRf0lZNWOLmoRWYdLcM3j9deQXvitsQLi7S')
-secret = os.getenv('ndwaoM9yyiL7443kQwPxmMHr2UDuFc6aC27TzPfZ')
+access = os.getenv('업비트 access키를 입력하시오')
+secret = os.getenv('업비트 secret키를 ')
 upbit = pyupbit.Upbit(access, secret)
 
 coin_list = ["KRW-BTC", "KRW-ETH", "KRW-DOGE"]
