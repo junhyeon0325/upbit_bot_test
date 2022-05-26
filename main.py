@@ -89,12 +89,12 @@ def get_yesterday_ma15(ticker):
 
 # 객체 생성
 load_dotenv()
-access = "ZR6AUxRf0lZNWOLmoRWYdLcM3j9deQXvitsQLi7S"
-secret = "ndwaoM9yyiL7443kQwPxmMHr2UDuFc6aC27TzPfZ"
+access = "업비트 access키를 입력하시오"
+secret = "업비트 secret키를 입력하시오"
 upbit = pyupbit.Upbit(access, secret)
-token = "5366296136:AAF9B_3YXH5fAEAefJDnkAJUC08gGTY1mX8"
-chat_id = 5342881340
-mc = "5342881340"
+token = "텔레그렘 토큰값을 입력하시오"
+chat_id = 텔레그렘 chat_id를 입력하시오
+mc = "텔레그렘 chat_id를 입력하시오"
 bot = telegram.Bot(token)
 df = pd.read_csv('dataset.csv')
 df2 = pd.DataFrame(columns=['date','jonbeo','auto_upbit','difference_jonbeo_autoupbit'])
@@ -123,7 +123,7 @@ prev_day = now.day
 yesterday_ma15 = [0]*(n)
 
 #네이버 뉴스를 텔레그렘으로 불러오게 하는 소스코드
-updater = Updater(token='5366296136:AAF9B_3YXH5fAEAefJDnkAJUC08gGTY1mX8', use_context=True)
+updater = Updater(token='텔레그렘 봇 토큰을 ', use_context=True)
 dispatcher = updater.dispatcher
 def coin1(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="비트코인과 관련된 뉴스 기사들입니다.")
