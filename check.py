@@ -9,12 +9,12 @@ import pandas as pd
 
 # 필요 API KEY load
 load_dotenv()
-access = os.getenv('ZR6AUxRf0lZNWOLmoRWYdLcM3j9deQXvitsQLi7S')
-secret = os.getenv('ndwaoM9yyiL7443kQwPxmMHr2UDuFc6aC27TzPfZ')  
+access = os.getenv('access키값')
+secret = os.getenv('secret키값')  
 upbit = pyupbit.Upbit(access, secret)
-token = os.getenv('5366296136:AAF9B_3YXH5fAEAefJDnkAJUC08gGTY1mX8')
-mc = os.getenv('5342881340')
-bot = telegram.Bot('5366296136:AAF9B_3YXH5fAEAefJDnkAJUC08gGTY1mX8')
+token = os.getenv('텔레그렘 토큰 값')
+mc = os.getenv('텔레그렘 chat_id')
+bot = telegram.Bot('텔레그렘 토큰 ')
 df = pd.read_csv('check_dataset.csv')
 
 # 필요 변수 초기화
